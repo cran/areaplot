@@ -39,7 +39,11 @@
 #' Matrix of cumulative sums that was used for plotting.
 #'
 #' @seealso
-#' \code{\link{barplot}}, \code{\link{polygon}}
+#' \code{\link{polygon}} is the underlying function used to draw polygons.
+#'
+#' \code{\link{confplot}} plots confidence bands as a filled area.
+#'
+#' \code{\link{areaplot-package}} gives an overview of the package.
 #'
 #' @importFrom graphics legend matplot polygon
 #' @importFrom grDevices gray.colors
@@ -57,6 +61,10 @@
 #' # add=TRUE
 #' plot(1940:1970, 500*runif(31), ylim=c(0,500))
 #' areaplot(Armed.Forces~Year, data=longley, add=TRUE)
+#'
+#' # data frame
+#' mydata <- longley[c("Year","GNP")]
+#' areaplot(mydata)
 #'
 #' # matrix
 #' areaplot(WorldPhones)
@@ -76,6 +84,7 @@
 #' # legend
 #' areaplot(table(Aids2$age, Aids2$sex), legend=TRUE)
 #' areaplot(WorldPhones, legend=TRUE, args.legend=list(x="topleft"))
+#'
 #' @export
 
 areaplot <- function(x, ...)

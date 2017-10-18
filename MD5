@@ -1,5 +1,9 @@
-06267c8e3bfcf18c6d11d6c3d956afee *DESCRIPTION
-a5264c8964a807ad0da1fa31617d6111 *NAMESPACE
-d63eb3110550e4e3f4965daaf84b746d *NEWS
-0c85acb71f53a2a6376f84c8b406de0d *R/areaplot.R
-a4f8133e773164a0992b8c1b23edff08 *man/areaplot.Rd
+c9db12652fa0953831cafbf9c12fa1ce *DESCRIPTION
+173020f66b4de1b09a7e3184fe3fba8c *NAMESPACE
+399a4fd8b25927110385c37654abff77 *NEWS
+bed2e9d32c3555c25b5bd49a24f10a23 *R/areaplot-package.R
+4544ae8c7a0052c547088f15b717ab0d *R/areaplot.R
+a869bb41b5aa8ddd66aee0156abeef27 *R/confplot.R
+ea4f8cdb7433c99beab690553701c67c *man/areaplot-package.Rd
+e756cb69347cbfafe1abab72ba56a6d3 *man/areaplot.Rd
+f1bb51552b6a42216f70f66e3ee4c82e *man/confplot.Rd
