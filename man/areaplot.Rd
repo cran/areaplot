@@ -100,6 +100,7 @@ areaplot(Seatbelts[,c("drivers","front","rear")],
 abline(v=1983+1/12, lty=3)
 
 # legend
+require(MASS)
 areaplot(table(Aids2$age, Aids2$sex), legend=TRUE)
 areaplot(WorldPhones, legend=TRUE, args.legend=list(x="topleft"))
 

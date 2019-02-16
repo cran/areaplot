@@ -89,5 +89,6 @@ points(log(dist)~log(speed), cars)
 
 \code{\link{areaplot-package}} gives an overview of the package.
 
-The \pkg{gplots} and \pkg{plotrix} packages provide functions to plot error bars.
+The \pkg{gplots} and \pkg{plotrix} packages provide functions to plot error
+bars.
 }

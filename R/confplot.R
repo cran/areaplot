@@ -39,7 +39,8 @@
 #'
 #' \code{\link{areaplot-package}} gives an overview of the package.
 #'
-#' The \pkg{gplots} and \pkg{plotrix} packages provide functions to plot error bars.
+#' The \pkg{gplots} and \pkg{plotrix} packages provide functions to plot error
+#' bars.
 #'
 #' @importFrom graphics matplot polygon
 #'
@@ -126,19 +127,19 @@ confplot.default <- function(x, y1=NULL, y2=NULL, add=FALSE, xlab=NULL,
 #' @export
 #' @export confplot.formula
 
-confplot.formula <- function (formula, data, subset, na.action=NULL, ...)
+confplot.formula <- function(formula, data, subset, na.action=NULL, ...)
 {
   m <- match.call(expand.dots=FALSE)
   if(is.matrix(eval(m$data,parent.frame())))
     m$data <- as.data.frame(data)
   m$... <- NULL
-  m[[1]] <- as.name("model.frame")
+  m[[1]] <- quote(model.frame)
 
   mf <- eval(m, parent.frame())
   if(is.matrix(mf[[1]]))
   {
+    ## LHS is cbind()
     lhs <- as.data.frame(mf[[1]])
-    names(lhs) <- as.character(m[[2]][[2]])[-1]
     confplot.default(cbind(mf[-1],lhs), ...)
   }
   else
