@@ -105,7 +105,7 @@ areaplot.default <- function(x, y=NULL, prop=FALSE, add=FALSE, xlab=NULL,
   {
     if(is.null(ylab))
       ylab <- deparse(substitute(x))
-    x <- data.frame(Time=time(x), x)
+    x <- data.frame(Time=time(x), x, check.names=FALSE)
   }
   if(is.table(x))  # table
   {
@@ -121,12 +121,12 @@ areaplot.default <- function(x, y=NULL, prop=FALSE, add=FALSE, xlab=NULL,
     if(!is.null(rownames(x)) &&
        !any(is.na(suppressWarnings(as.numeric(rownames(x))))))
     {
-      x <- data.frame(as.numeric(rownames(x)), x)
+      x <- data.frame(as.numeric(rownames(x)), x, check.names=FALSE)
       names(x)[1] <- ""
     }
     else
     {
-      x <- data.frame(Index=seq_len(nrow(x)), x)
+      x <- data.frame(Index=seq_len(nrow(x)), x, check.names=FALSE)
     }
   }
   if(is.list(x))  # data.frame or list
