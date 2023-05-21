@@ -8,8 +8,8 @@
 \usage{
 areaplot(x, ...)
 
-\method{areaplot}{default}(x, y = NULL, prop = FALSE, add = FALSE,
-  xlab = NULL, ylab = NULL, col = NULL, legend = FALSE,
+\method{areaplot}{default}(x, y = NULL, prop = FALSE, rev = FALSE,
+  add = FALSE, xlab = NULL, ylab = NULL, col = NULL, legend = FALSE,
   args.legend = NULL, ...)
 
 \method{areaplot}{formula}(formula, data, subset, na.action = NULL, ...)
@@ -30,6 +30,9 @@ columns.}
 
 \item{prop}{whether data should be plotted as proportions, so stacked areas
 equal 1.}
+
+\item{rev}{whether to plot the stacked areas from bottom to top, instead of
+top to bottom.}
 
 \item{add}{whether polygons should be added to an existing plot.}
 
@@ -101,8 +104,11 @@ abline(v=1983+1/12, lty=3)
 
 # legend
 require(MASS)
-areaplot(table(Aids2$age, Aids2$sex), legend=TRUE)
-areaplot(WorldPhones, legend=TRUE, args.legend=list(x="topleft"))
+areaplot(table(Aids2$age, Aids2$sex), legend=TRUE, col=c(2,4))
+areaplot(table(Aids2$age, Aids2$sex), legend=TRUE, col=c(2,4), rev=TRUE)
+wp <- WorldPhones[,order(colnames(WorldPhones))]
+areaplot(wp, col=2:8, legend=TRUE, args.legend=list(x="topleft"))
+areaplot(wp, col=2:8, legend=TRUE, args.legend=list(x="topleft"), rev=TRUE)
 
 }
 \seealso{

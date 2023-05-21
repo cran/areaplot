@@ -29,8 +29,7 @@
 #' @param \dots further arguments passed to \code{confplot.default},
 #'        \code{matplot}, and \code{polygon}.
 #'
-#' @return
-#' Data frame of coordinates that were used for plotting.
+#' @return Data frame of coordinates that were used for plotting.
 #'
 #' @seealso
 #' \code{\link{polygon}} is the underlying function used to draw polygons.
@@ -95,6 +94,14 @@ confplot.default <- function(x, y1=NULL, y2=NULL, add=FALSE, xlab=NULL,
       y2 <- y1[,2]
       y1 <- y1[,1]
     }
+    ## Recycle singleton y1 and y2
+    n <- max(c(length(x), length(y1), length(y2)))
+    if(length(y1) == 1)
+      y1 <- rep(y1, length.out=n)
+    if(length(y2) == 1)
+      y2 <- rep(y2, length.out=n)
+    if(length(y1) != n || length(y2) != n)
+      stop("'x' and 'y' lengths differ")
   }
   else if(ncol(x) == 3)
   {
@@ -105,7 +112,9 @@ confplot.default <- function(x, y1=NULL, y2=NULL, add=FALSE, xlab=NULL,
     x <- x[,1]
   }
   else
+  {
     stop("'x' should be a vector or contain 3 columns")
+  }
 
   if(is.null(ylab))
     ylab <- ""

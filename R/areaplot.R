@@ -10,6 +10,8 @@
 #'        \code{ts/mts}.
 #' @param y a numeric vector of y values, or a matrix containing y values in
 #'        columns.
+#' @param rev whether to plot the stacked areas from bottom to top, instead of
+#'        top to bottom.
 #' @param prop whether data should be plotted as proportions, so stacked areas
 #'        equal 1.
 #' @param add whether polygons should be added to an existing plot.
@@ -35,8 +37,7 @@
 #' @param \dots further arguments passed to \code{areaplot.default},
 #'        \code{matplot}, and \code{polygon}.
 #'
-#' @return
-#' Matrix of cumulative sums that was used for plotting.
+#' @return Matrix of cumulative sums that was used for plotting.
 #'
 #' @seealso
 #' \code{\link{polygon}} is the underlying function used to draw polygons.
@@ -83,8 +84,11 @@
 #'
 #' # legend
 #' require(MASS)
-#' areaplot(table(Aids2$age, Aids2$sex), legend=TRUE)
-#' areaplot(WorldPhones, legend=TRUE, args.legend=list(x="topleft"))
+#' areaplot(table(Aids2$age, Aids2$sex), legend=TRUE, col=c(2,4))
+#' areaplot(table(Aids2$age, Aids2$sex), legend=TRUE, col=c(2,4), rev=TRUE)
+#' wp <- WorldPhones[,order(colnames(WorldPhones))]
+#' areaplot(wp, col=2:8, legend=TRUE, args.legend=list(x="topleft"))
+#' areaplot(wp, col=2:8, legend=TRUE, args.legend=list(x="topleft"), rev=TRUE)
 #'
 #' @export
 
@@ -97,8 +101,8 @@ areaplot <- function(x, ...)
 #' @export
 #' @export areaplot.default
 
-areaplot.default <- function(x, y=NULL, prop=FALSE, add=FALSE, xlab=NULL,
-                             ylab=NULL, col=NULL, legend=FALSE,
+areaplot.default <- function(x, y=NULL, prop=FALSE, rev=FALSE, add=FALSE,
+                             xlab=NULL, ylab=NULL, col=NULL, legend=FALSE,
                              args.legend=NULL, ...)
 {
   if(is.ts(x)) # ts/mts
@@ -152,15 +156,23 @@ areaplot.default <- function(x, y=NULL, prop=FALSE, add=FALSE, xlab=NULL,
     y <- x
     x <- seq_along(x)
   }
+
   if(is.null(xlab))
     xlab <- deparse(substitute(x))
   if(is.null(ylab))
     ylab <- deparse(substitute(y))
 
   y <- as.matrix(y)
+  if(length(x) != nrow(y))
+    stop("'x' and 'y' lengths differ")
   if(is.null(col))
     col <- gray.colors(ncol(y))
   col <- rep(col, length.out=ncol(y))
+  if(!rev)
+  {
+    y <- as.matrix(rev(as.data.frame(y)))
+    col <- rev(col)
+  }
   if(prop)
     y <- prop.table(y, 1)
   y <- t(rbind(0, apply(y, 1, cumsum)))
