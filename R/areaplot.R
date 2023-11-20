@@ -23,10 +23,10 @@
 #'        series is plotted.
 #' @param args.legend a list of additional arguments to pass to the
 #'        \code{\link{legend}} function.
-#' @param formula a \code{\link{formula}}, such as \code{y~x} or
-#'        \code{cbind(y1,y2)~x}, specifying x and y values. A dot on the
-#'        left-hand side, \code{.~x}, means all variables except the one
-#'        specified on the right-hand side.
+#' @param formula a \code{\link{formula}}, such as \code{y~x},
+#'        \code{cbind(y1,y2)~x}, or \code{y~x+group}, specifying x and y values.
+#'        A dot on the left-hand side, \code{.~x}, means all variables except
+#'        the one specified on the right-hand side.
 #' @param data a data frame (or list) from which the variables in formula should
 #'        be taken.
 #' @param subset an optional vector specifying a subset of observations to be
@@ -46,10 +46,6 @@
 #'
 #' \code{\link{areaplot-package}} gives an overview of the package.
 #'
-#' @importFrom graphics legend matplot polygon
-#' @importFrom grDevices gray.colors
-#' @importFrom stats is.ts terms time
-#'
 #' @examples
 #' areaplot(rpois(10,40))
 #' areaplot(rnorm(10))
@@ -58,6 +54,7 @@
 #' areaplot(Armed.Forces~Year, data=longley)
 #' areaplot(cbind(Armed.Forces,Unemployed)~Year, data=longley)
 #' areaplot(.~Year, data=longley)
+#' areaplot(circumference~age+Tree, Orange)
 #'
 #' # add=TRUE
 #' plot(1940:1970, 500*runif(31), ylim=c(0,500))
@@ -89,6 +86,10 @@
 #' wp <- WorldPhones[,order(colnames(WorldPhones))]
 #' areaplot(wp, col=2:8, legend=TRUE, args.legend=list(x="topleft"))
 #' areaplot(wp, col=2:8, legend=TRUE, args.legend=list(x="topleft"), rev=TRUE)
+#'
+#' @importFrom graphics legend matplot polygon
+#' @importFrom grDevices gray.colors
+#' @importFrom stats is.ts terms time
 #'
 #' @export
 
@@ -210,34 +211,49 @@ areaplot.default <- function(x, y=NULL, prop=FALSE, rev=FALSE, add=FALSE,
 }
 
 #' @rdname areaplot
+#' @importFrom stats xtabs
 #' @export
 #' @export areaplot.formula
 
-areaplot.formula <- function(formula, data, subset, na.action=NULL, ...)
+areaplot.formula <- function(formula, data, subset, na.action, xlab=NULL,
+                             ylab=NULL, ...)
 {
+  if(missing(formula) || length(formula) != 3)
+    stop("'formula' missing or incorrect")
   m <- match.call(expand.dots=FALSE)
-  if(is.matrix(eval(m$data,parent.frame())))
+  if(is.matrix(eval(m$data, parent.frame())))
     m$data <- as.data.frame(data)
-  m$... <- NULL
+  m$... <- m$xlab <- m$ylab <- NULL
   m[[1]] <- quote(model.frame)
   if(formula[[2]] == ".")
   {
-    ## LHS is .
-    rhs <- as.list(attr(terms(formula[-2]),"variables")[-1])
-    lhs <- as.call(c(quote(cbind), setdiff(lapply(names(data),as.name),rhs)))
-    formula[[2L]] <- lhs
-    m[[2L]] <- formula
+    # LHS is .
+    rhs <- as.list(attr(terms(formula[-2]), "variables")[-1])
+    lhs <- as.call(c(quote(cbind), setdiff(lapply(names(data), as.name), rhs)))
+    formula[[2]] <- lhs
+    m[[2]] <- formula
   }
 
   mf <- eval(m, parent.frame())
+  if(ncol(mf[-1]) == 0 || ncol(mf[-1]) >= 3)
+    stop("formula must specify 1 or 2 categorical variables")
+  if(anyDuplicated(mf[-1]))
+    stop("duplicated categorical values - try another formula or subset")
+  if(is.null(xlab))
+    xlab <- names(mf)[2]
   if(is.matrix(mf[[1]]))
   {
-    ## LHS is cbind()
-    lhs <- as.data.frame(mf[[1]])
-    areaplot.default(cbind(mf[-1],lhs), ...)
+    # LHS is cbind()
+    if(ncol(mf[-1]) != 1)
+      stop("formula with cbind() must specify 1 categorical variable")
+    lhs <- mf[[1]]
+    rownames(lhs) <- mf[[ncol(mf)]]
+    areaplot.default(lhs, xlab=xlab, ylab=ylab, ...)
   }
   else
   {
-    areaplot.default(mf[2:1], ...)
+    if(is.null(ylab))
+      ylab <- names(mf)[1]
+    areaplot.default(xtabs(mf, addNA=TRUE), xlab=xlab, ylab=ylab, ...)
   }
 }

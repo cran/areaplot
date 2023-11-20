@@ -1,6 +1,6 @@
 Package: areaplot
-Version: 2.0.0
-Date: 2023-05-21
+Version: 2.1.1
+Date: 2023-11-20
 Title: Plot Stacked Areas and Confidence Bands as Filled Polygons
 Authors@R: person("Arni", "Magnusson", role=c("aut","cre"), email="thisisarni@gmail.com")
 Imports: graphics, grDevices, stats
@@ -12,8 +12,8 @@ License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-05-21 06:43:05 UTC; arnim
+Packaged: 2023-11-20 02:13:51 UTC; arnim
 Author: Arni Magnusson [aut, cre]
 Maintainer: Arni Magnusson <thisisarni@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-05-21 08:10:02 UTC
+Date/Publication: 2023-11-20 08:20:02 UTC

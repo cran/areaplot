@@ -1,3 +1,10 @@
+# areaplot 2.1.1 (2023-11-20)
+
+* Added formula support for areaplot(y~x+group).
+
+
+
+
 # areaplot 2.0.0 (2023-05-21)
 
 * Added argument 'rev' to areaplot() to plot the stacked areas from bottom to

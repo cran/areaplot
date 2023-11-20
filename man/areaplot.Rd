@@ -12,7 +12,8 @@ areaplot(x, ...)
   add = FALSE, xlab = NULL, ylab = NULL, col = NULL, legend = FALSE,
   args.legend = NULL, ...)
 
-\method{areaplot}{formula}(formula, data, subset, na.action = NULL, ...)
+\method{areaplot}{formula}(formula, data, subset, na.action, xlab = NULL,
+  ylab = NULL, ...)
 }
 \arguments{
 \item{x}{a numeric vector of x values, or if \code{y=NULL} a numeric vector
@@ -49,10 +50,10 @@ series is plotted.}
 \item{args.legend}{a list of additional arguments to pass to the
 \code{\link{legend}} function.}
 
-\item{formula}{a \code{\link{formula}}, such as \code{y~x} or
-\code{cbind(y1,y2)~x}, specifying x and y values. A dot on the
-left-hand side, \code{.~x}, means all variables except the one
-specified on the right-hand side.}
+\item{formula}{a \code{\link{formula}}, such as \code{y~x},
+\code{cbind(y1,y2)~x}, or \code{y~x+group}, specifying x and y values.
+A dot on the left-hand side, \code{.~x}, means all variables except
+the one specified on the right-hand side.}
 
 \item{data}{a data frame (or list) from which the variables in formula should
 be taken.}
@@ -78,6 +79,7 @@ areaplot(rnorm(10))
 areaplot(Armed.Forces~Year, data=longley)
 areaplot(cbind(Armed.Forces,Unemployed)~Year, data=longley)
 areaplot(.~Year, data=longley)
+areaplot(circumference~age+Tree, Orange)
 
 # add=TRUE
 plot(1940:1970, 500*runif(31), ylim=c(0,500))
