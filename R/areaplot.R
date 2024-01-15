@@ -177,7 +177,7 @@ areaplot.default <- function(x, y=NULL, prop=FALSE, rev=FALSE, add=FALSE,
   if(prop)
     y <- prop.table(y, 1)
   y <- t(rbind(0, apply(y, 1, cumsum)))
-  na <- is.na(x) | apply(is.na(y),1,any)
+  na <- is.na(x) | apply(is.na(y), 1, any)
   x <- x[!na][order(x[!na])]
   y <- y[!na,][order(x[!na]),]
 
@@ -236,16 +236,16 @@ areaplot.formula <- function(formula, data, subset, na.action, xlab=NULL,
 
   mf <- eval(m, parent.frame())
   if(ncol(mf[-1]) == 0 || ncol(mf[-1]) >= 3)
-    stop("formula must specify 1 or 2 categorical variables")
+    stop("formula must specify 1 or 2 variables after the tilde")
   if(anyDuplicated(mf[-1]))
-    stop("duplicated categorical values - try another formula or subset")
+    stop("duplicated values after the tilde - try another formula or subset")
   if(is.null(xlab))
     xlab <- names(mf)[2]
   if(is.matrix(mf[[1]]))
   {
     # LHS is cbind()
     if(ncol(mf[-1]) != 1)
-      stop("formula with cbind() must specify 1 categorical variable")
+      stop("formula with cbind() must specify 1 variable after the tilde")
     lhs <- mf[[1]]
     rownames(lhs) <- mf[[ncol(mf)]]
     areaplot.default(lhs, xlab=xlab, ylab=ylab, ...)

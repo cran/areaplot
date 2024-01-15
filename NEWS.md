@@ -1,3 +1,12 @@
+# areaplot 2.1.2 (2024-01-15)
+
+* Improved confplot() so it supports 'x' to be out of order.
+
+* Improved confplot() so it supports 'x' of class POSIXt and Date.
+
+
+
+
 # areaplot 2.1.1 (2023-11-20)
 
 * Added formula support for areaplot(y~x+group).
